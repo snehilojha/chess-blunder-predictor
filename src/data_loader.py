@@ -5,7 +5,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import chess.pgn
 import pandas as pd
 from config import (
-    RAW_PGN_PATH, PROCESSED_PATH,
+    RAW_PGN_PATH, RAW_GAMES_PATH,
     MIN_ELO, MAX_ELO, TIME_CONTROLS
 )
 
@@ -112,7 +112,7 @@ def load_games(pgn_path: Path = RAW_PGN_PATH, max_games: int = MAX_GAMES) -> pd.
     return pd.DataFrame(records)
  
  
-def save_processed(df: pd.DataFrame, path: Path = PROCESSED_PATH) -> None:
+def save_processed(df: pd.DataFrame, path: Path = RAW_GAMES_PATH) -> None:
     """Save DataFrame to parquet. Creates directory if it doesn't exist."""
     path.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path, index=False)
