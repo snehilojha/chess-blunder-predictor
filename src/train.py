@@ -11,10 +11,13 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from config import (
     CLEANED_PATH, FEATURES_PATH, MODELS_DIR, MLFLOW_TRACKING_URI,
-    MLFLOW_EXPERIMENT, MLFLOW_MODEL_NAME, XGBOOST_PARAMS,
+    MLFLOW_ARTIFACT_URI, MLFLOW_EXPERIMENT, MLFLOW_MODEL_NAME, XGBOOST_PARAMS,
     FEATURE_COLS, N_CV_FOLDS, TEST_SIZE, RANDOM_STATE
 )
-from feature_engineer import build_features
+try:
+    from feature_engineer import build_features
+except ModuleNotFoundError:
+    from src.feature_engineer import build_features
 
 
 def load_features():
@@ -75,6 +78,9 @@ def train(train_df, test_df):
 
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    client = mlflow.MlflowClient()
+    if not client.get_experiment_by_name(MLFLOW_EXPERIMENT):
+        client.create_experiment(MLFLOW_EXPERIMENT, artifact_location=MLFLOW_ARTIFACT_URI)
     mlflow.set_experiment(MLFLOW_EXPERIMENT)
 
     with mlflow.start_run() as run:

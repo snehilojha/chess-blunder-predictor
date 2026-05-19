@@ -14,8 +14,7 @@ PIECE_VALUES = {
 
 
 def side_has_blunder(evals, offset, start=SNAPSHOT_MOVE, end=SNAPSHOT_MOVE + BLUNDER_WINDOW, threshold=BLUNDER_THRESHOLD):
-    window = [min(max(v, -CAP), CAP) for v in evals[start:end] if v == v]
-    side = window[offset::2]
+    side = [min(max(v, -CAP), CAP) for v in evals[start:end][offset::2] if v == v]
     for i in range(1, len(side)):
         if side[i-1] - side[i] > threshold:
             return 1
@@ -23,8 +22,7 @@ def side_has_blunder(evals, offset, start=SNAPSHOT_MOVE, end=SNAPSHOT_MOVE + BLU
 
 
 def eval_features(evals, offset, color, snapshot=SNAPSHOT_MOVE):
-    window = [min(max(v, -CAP), CAP) for v in evals[:snapshot] if v == v]
-    side = window[offset::2]
+    side = [min(max(v, -CAP), CAP) for v in evals[:snapshot][offset::2] if v == v]
     if len(side) == 0:
         return {"eval_at_snapshot": np.nan, "eval_volatility": np.nan, "eval_trend": np.nan}
 

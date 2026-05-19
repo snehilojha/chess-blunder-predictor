@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+
+# Tests
+.pytest_cache/
+
+# Data — raw source and processed outputs are not committed
+data/raw/
+data/processed/
+
+# MLflow runtime state
+mlruns.db
+mlruns/
+
+# Model artifacts — large binary files, restored by retraining
+models/mlflow_artifacts/
+models/preprocessing_metadata.json
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Claude Code session files
+.claude/
+context.md
